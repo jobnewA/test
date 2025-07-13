@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تحويل لوحة المفاتيح</title>
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      direction: rtl;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h2 {
+      color: #2c3e50;
+    }
+
+    textarea {
+      width: 80%;
+      height: 100px;
+      font-size: 18px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-top: 15px;
+      resize: none;
+    }
+
+    .btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      font-size: 16px;
+      margin: 10px 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #2980b9;
+    }
+
+    .success {
+      background-color: #2ecc71;
+    }
+
+    .success:hover {
+      background-color: #27ae60;
+    }
+
+    #output {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      width: 80%;
+      margin: 20px auto;
+      font-size: 20px;
+      min-height: 60px;
+      color: #2c3e50;
+    }
+
+    #copiedMessage {
+      font-size: 14px;
+      color: green;
+      margin-top: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔄 تحويل بين لوحة مفاتيح إنجليزية ⬌ عربية</h2>
+
+  <textarea id="input" placeholder="اكتب هنا..."></textarea>
+  <br>
+  <button class="btn" onclick="convert('toArabic')">تحويل لعربي</button>
+  <button class="btn" onclick="convert('toEnglish')">تحويل لإنجليزي</button>
+  <br>
+  <div id="output"></div>
+  <button class="btn success" onclick="copyText()">نسخ النص</button>
+  <div id="copiedMessage">✔ تم نسخ النص!</div>
+
+  <script>
+    const mapEnToAr = {
+      'q': 'ض', 'w': 'ص', 'e': 'ث', 'r': 'ق', 't': 'ف', 'y': 'غ', 'u': 'ع', 'i': 'ه', 'o': 'خ', 'p': 'ح', '[': 'ج', ']': 'د',
+      'a': 'ش', 's': 'س', 'd': 'ي', 'f': 'ب', 'g': 'ل', 'h': 'ا', 'j': 'ت', 'k': 'ن', 'l': 'م', ';': 'ك', "'": 'ط',
+      'z': 'ئ', 'x': 'ء', 'c': 'ؤ', 'v': 'ر', 'b': 'لا', 'n': 'ى', 'm': 'ة', ',': 'و', '.': 'ز', '/': 'ظ'
+    };
+
+    const mapArToEn = {};
+    for (let key in mapEnToAr) {
+      const val = mapEnToAr[key];
+      if (!(val in mapArToEn)) {
+        mapArToEn[val] = key;
+      }
+    }
+
+    function convert(direction) {
+      const input = document.getElementById("input").value;
+      let result = '';
+
+      if (direction === 'toArabic') {
+        result = input.split('').map(char => mapEnToAr[char] || char).join('');
+      } else if (direction === 'toEnglish') {
+        result = input.split('').map(char => mapArToEn[char] || char).join('');
+      }
+
+      document.getElementById("output").textContent = result;
+      document.getElementById("copiedMessage").style.display = "none";
+    }
+
+    function copyText() {
+      const outputText = document.getElementById("output").textContent;
+      navigator.clipboard.writeText(outputText).then(() => {
+        const msg = document.getElementById("copiedMessage");
+        msg.style.display = "block";
+        setTimeout(() => msg.style.display = "none", 1500);
+      });
+    }
+  </script>
+
+</body>
+</html>
